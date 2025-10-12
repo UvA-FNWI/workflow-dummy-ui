@@ -1,0 +1,1 @@
+export const VerticalSpace = () => <div style={{ marginBottom: "15px" }} />;

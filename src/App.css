@@ -1,0 +1,56 @@
+#root {
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.App-header {
+    margin-bottom: 15px;
+    max-width: 800px;
+}
+
+.App-header-user button {
+    padding-right: 0;
+}
+
+.App-header h1 {
+    font-size: 28px;
+    margin-top: 7px;
+    margin-bottom: 0;
+    font-family: Cambria, 'Times New Roman', serif;
+    font-weight: bold;
+    border: none;
+    padding-bottom: 1px;
+}
+
+.App-header-text {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+}
+
+main {
+    max-width: 1200px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.top-gap {
+    margin-top: 10px;
+}
+
+.gap-below {
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}

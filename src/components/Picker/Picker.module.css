@@ -1,0 +1,16 @@
+.results {
+    border: 1px solid #aaa;
+    padding: 5px 0;
+    margin-top: 20px;
+    min-height: 300px;
+    overflow-x: hidden;
+}
+
+.results i {
+    padding: 20px 10px;
+}
+
+.results button {
+    white-space: normal;
+    text-align: left;
+}
