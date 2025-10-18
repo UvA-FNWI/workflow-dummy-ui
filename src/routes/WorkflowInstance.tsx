@@ -79,7 +79,7 @@ export const WorkflowInstance = () => {
                       { multiple && <MultipleFormViewer entityType={data.entityType.name}
                                                         instanceId={instanceId}
                                                         formName={k} /> }
-                      { !multiple && <FormViewer instanceId={instanceId} submissionId={sub.id} /> }
+                      { !multiple && <FormViewer submission={sub} /> }
                       <div style={{marginTop: "10px"}} className="button-group">
                         {sub?.permissions.includes("Edit") && <Link to={`form/${sub.id}`}><Button>{t('edit-form')}</Button></Link>}
                       </div>

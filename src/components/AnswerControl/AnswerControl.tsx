@@ -1,0 +1,60 @@
+import {formatDate, formatDateTime} from "utilities/formatters.ts";
+import {useTranslate} from "hooks/useTranslate.ts";
+import {Markdown} from "components/Markdown/Markdown.tsx";
+import type {Answer, DataType, Question, User} from "backend/types.ts";
+import type {Currency} from "components/CurrencyControl/CurrencyControl.tsx";
+
+interface Props {
+  answer: Answer
+  question?: Question
+  type?: DataType
+  isPart?: boolean
+}
+
+export const AnswerControl = ({ answer, question, type, isPart }: Props) => {
+  const control = <AnswerControlInternal answer={answer} question={question} type={type} isPart={isPart} />;
+  // if (answer.href)
+  //   return <Link to={answer.href}>{control}</Link>
+  return control;
+}
+
+const AnswerControlInternal = ({ answer, question, type, isPart }: Props) => {
+  const { l } = useTranslate();
+
+  if (question?.isArray && !isPart && question.type != "File") {
+    const entries = answer.value as unknown[];
+    return <div>{ entries?.map((e,i) =>
+      <div key={i}>
+        <AnswerControlInternal answer={{ ...answer, value: e }} question={question} type={type} isPart={true} />
+      </div>) }
+    </div>;
+  }
+
+  switch (type ?? question?.type) {
+    // case "File":
+    //   return <>{ answer.files?.map(f => <div key={f.id}><a href={f.url ?? undefined} target="_blank">{f.name}</a></div>)}</>
+    case "Date":
+      return formatDate(answer);
+    case "DateTime":
+      return formatDateTime(answer);
+    case "User":
+      return (answer.value as User)?.displayName;
+    case "Choice":
+      return l(question?.choices?.filter(c => c.name === answer.value)[0]?.text);
+    case "Currency": {
+      const currency = answer.value as Currency;
+      return `${currency?.currency} ${currency?.amount}`;
+    }
+    // case DataType.Table:
+    //   return <TableViewer answer={answer} />
+  }
+  if (answer.value && question?.multiline) {
+    return <>
+      <Markdown source={answer.value as string} />
+      {/*{ answer.files?.map(f => <div><a href={f.url ?? undefined} target="_blank">{f.name}</a></div>)}*/}
+    </>
+  }
+  return <>
+    {answer.value?.toString()}
+  </>
+}

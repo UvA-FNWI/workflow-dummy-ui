@@ -37,6 +37,7 @@ export type User = {
 }
 
 export type Answer = {
+  id: string;
   questionName: string
   value: unknown
   isVisible: boolean
@@ -85,6 +86,8 @@ export type Question = {
   multiline: boolean
   layout: QuestionLayout
   entityType?: string
+  hideInResults: boolean;
+  shortText?: LocalString;
 }
 
 export type Choice = {
