@@ -1,15 +1,19 @@
-import {Link, Navigate, useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {DataTable} from "components/DataTable/DataTable.tsx";
 import {formatDateTime} from "utilities/formatters.ts";
 import {FormViewer} from "components/FormViewer/FormViewer.tsx";
 import {Button, Descriptions, Tabs} from "antd";
 import {MultipleFormViewer} from "components/FormViewer/MultipleFormViewer.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useTranslate} from "hooks/useTranslate.ts";
 import {ActionButton} from "components/Actions/ActionButton.tsx";
 import {StepsTable} from "components/StepsTable/StepsTable.tsx";
 import {endpoints} from "backend/endpoints.ts";
 import type {Action} from "backend/types.ts";
+import {Link} from "components/Link/Link.tsx";
+import {extractTitle, useSetTitle} from "hooks/useTitles.ts";
+import {useNavigate} from "hooks/useNavigate.ts";
+import {Navigate} from "components/Link/Navigate.tsx";
 
 export const WorkflowInstance = () => {
   const { instanceId: instanceIdParam } = useParams();
@@ -23,7 +27,7 @@ export const WorkflowInstance = () => {
 
   const [activeAction, setActiveAction] = useState<string | undefined>();
 
-  //useSetTitle(extractTitle(data ?? null));
+  useSetTitle(extractTitle(data ?? null));
 
   const startAction = async (act: Action) => {
     setActiveAction(act.id);
@@ -44,8 +48,15 @@ export const WorkflowInstance = () => {
 
   const showAdminTools = data?.permissions.includes("ViewAdminTools");
 
+  useEffect(() => {
+    if (data && !data.submissions.filter(s => s.dateSubmitted).length && subsToSubmit && subsToSubmit.length > 0) {
+      navigate(`form/${subsToSubmit[0].form}`, {replace: true});
+    }
+  }, [data, navigate, subsToSubmit]);
+
   return <>
-    {data && !data.submissions.filter(s => s.dateSubmitted).length && subsToSubmit && subsToSubmit.length > 0 && <Navigate to={`form/${subsToSubmit[0].form}`} replace={true} /> }
+    {data && !data.submissions.filter(s => s.dateSubmitted).length && subsToSubmit && subsToSubmit.length > 0 &&
+        <Navigate to={`form/${subsToSubmit[0].form}`} replace={true} /> }
     {data && <div>
         <Descriptions bordered column={1} style={{ width: "400px", marginBottom: "30px", marginTop: "20px" }}>
             <Descriptions.Item label={t("title")}>

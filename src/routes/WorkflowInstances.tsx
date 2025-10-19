@@ -1,9 +1,10 @@
 import type {EntityType, WorkflowInstance} from "backend/types.ts";
 import {endpoints} from "backend/endpoints.ts";
 import {useTranslate} from "hooks/useTranslate.ts";
-import {Link, useNavigate} from "react-router-dom";
 import { Button } from "antd";
 import {CsvExport, DataTable, ExcelExport} from "components/DataTable/DataTable.tsx";
+import {Link} from "components/Link/Link.tsx";
+import {useNavigate} from "hooks/useNavigate.ts";
 
 interface Props {
   entityType: EntityType;

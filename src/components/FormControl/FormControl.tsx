@@ -1,10 +1,10 @@
 import {Button, Tabs} from "antd";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {PageControl} from "components/FormControl/PageControl.tsx";
 import {useSetTitle} from "hooks/useTitles.ts";
 import {useTranslate} from "hooks/useTranslate.ts";
 import {endpoints} from "backend/endpoints.ts";
+import {useNavigate} from "hooks/useNavigate.ts";
 
 interface Props {
   instanceId: string

@@ -1,8 +1,9 @@
-import {Link, useMatches} from "react-router-dom";
+import {useMatches} from "react-router-dom";
 import {useEffect} from "react";
 import {extractTitle, useAddTitle, useTitles} from "hooks/useTitles.ts";
 import {useTranslate} from "hooks/useTranslate.ts";
 import {endpoints} from "backend/endpoints.ts";
+import {Link} from "components/Link/Link.tsx";
 
 interface Props {
   baseUrl?: string;

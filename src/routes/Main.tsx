@@ -23,7 +23,10 @@ export const Main = () => {
 
   return <Tabs
     defaultActiveKey={searchParams.get("tab") ?? undefined}
-    onChange={key => setSearchParams({ tab: key }, { replace: true })}
+    onChange={key => setSearchParams(params => {
+      params.set("tab", key);
+      return params;
+    }, { replace: true })}
     items={data.map(t => ({
       key: t.name,
       label: l(t.titlePlural),
