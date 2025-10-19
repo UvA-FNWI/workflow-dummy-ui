@@ -1,4 +1,4 @@
-FROM node:22-alpine AS build
+FROM docker.io/node:22-alpine AS build
 WORKDIR /source
 
 COPY package-lock.json .
@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1.29.2-alpine
+FROM docker.io/nginx:1.29.2-alpine
 
 RUN apk add bash
 
