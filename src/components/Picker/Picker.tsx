@@ -18,7 +18,7 @@ export const Picker = <T extends PickObject,>({ open, onClose, onPick, query, re
   const [input, setInput] = useState('');
   const { t } = useTranslate();
 
-  const { data, loading } = query.useQuery({ query: input }, { skip: input.length < 3 });
+  const { data, isLoading } = query.useQuery({ query: input }, { skip: input.length < 3 });
 
   return <Modal title={t("picker.title")}
                 open={open}
@@ -30,7 +30,7 @@ export const Picker = <T extends PickObject,>({ open, onClose, onPick, query, re
       { data && data.map((u: T) => <div key={u.id}>
         <Button type="link" onClick={() => onPick(u)}>{render(u)}</Button>
       </div>) }
-      { loading && <i>{t("picker.loading")}</i> }
+      { isLoading && <i>{t("picker.loading")}</i> }
     </div>
     {children}
   </Modal>
