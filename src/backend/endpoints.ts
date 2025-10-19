@@ -10,12 +10,18 @@ import type {
 import type {SaveAnswerPayload, SubmitSubmissionPayload} from "backend/payloads.ts";
 import {endpoint} from "env.ts";
 
+const params = new URLSearchParams(window.location.search);
+export const backendConfig = {
+  version: params.get("version") ?? "",
+  endpoint: params.get("api") ?? endpoint
+}
+
 export const backendSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: new URLSearchParams(window.location.search).get("api") ?? endpoint,
+    baseUrl: backendConfig.endpoint,
     headers: {
-      "Workflow-Version": new URLSearchParams(window.location.search).get("version") ?? ""
+      "Workflow-Version": backendConfig.version
     }
   }),
   endpoints: (build) => ({
