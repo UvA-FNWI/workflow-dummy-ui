@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow-dummy-ui
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  selector:
+    matchLabels:
+      app: workflow-dummy-ui
+  replicas: 1
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app: workflow-dummy-ui
+    spec:
+      containers:
+        - name: workflow-dummy-ui
+          image: "{{ .Values.registry }}/workflow-dummy-ui:{{ .Values.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: UI_VERSION
+              value: "{{ .Chart.AppVersion }}"
+            - name: ENDPOINT
+              value: "{{ .Values.endpoint }}"

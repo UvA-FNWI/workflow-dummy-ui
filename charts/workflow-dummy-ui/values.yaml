@@ -1,0 +1,6 @@
+hostname: workflow-dummy-ui.local
+ingressClass: nginx
+tag: latest
+registry: datanosecr.azurecr.io
+  
+endpoint: workflow-api.local

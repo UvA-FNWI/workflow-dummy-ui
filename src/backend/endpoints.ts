@@ -8,10 +8,16 @@ import type {
   SaveAnswerParams
 } from "backend/params.ts";
 import type {SaveAnswerPayload, SubmitSubmissionPayload} from "backend/payloads.ts";
+import {endpoint} from "env.ts";
 
 export const backendSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5025' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: new URLSearchParams(window.location.search).get("api") ?? endpoint,
+    headers: {
+      "Workflow-Version": new URLSearchParams(window.location.search).get("version") ?? ""
+    }
+  }),
   endpoints: (build) => ({
     getEntityTypes: build.query<EntityType[], unknown>({
       query: () => 'EntityTypes'
