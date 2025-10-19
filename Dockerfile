@@ -19,4 +19,4 @@ COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY docker/create-env-js.sh /docker-entrypoint.d
 RUN chmod +x /docker-entrypoint.d/create-env-js.sh
 
-COPY --from=build /source/build /usr/share/nginx/html
+COPY --from=build /source/dist /usr/share/nginx/html
