@@ -4,7 +4,7 @@ import {formatDateTime} from "utilities/formatters.ts";
 import {FormViewer} from "components/FormViewer/FormViewer.tsx";
 import {Button, Descriptions, Tabs} from "antd";
 import {MultipleFormViewer} from "components/FormViewer/MultipleFormViewer.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useTranslate} from "hooks/useTranslate.ts";
 import {ActionButton} from "components/Actions/ActionButton.tsx";
 import {StepsTable} from "components/StepsTable/StepsTable.tsx";
@@ -47,12 +47,6 @@ export const WorkflowInstance = () => {
   const forms = [...new Set(data?.submissions.map(s => s.form.name))];
 
   const showAdminTools = data?.permissions.includes("ViewAdminTools");
-
-  useEffect(() => {
-    if (data && !data.submissions.filter(s => s.dateSubmitted).length && subsToSubmit && subsToSubmit.length > 0) {
-      navigate(`form/${subsToSubmit[0].form}`, {replace: true});
-    }
-  }, [data, navigate, subsToSubmit]);
 
   return <>
     {data && !data.submissions.filter(s => s.dateSubmitted).length && subsToSubmit && subsToSubmit.length > 0 &&

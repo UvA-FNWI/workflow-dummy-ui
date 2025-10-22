@@ -1,5 +1,5 @@
 import {type NavigateOptions, type To, useNavigate as useRouterNavigate, useSearchParams} from "react-router-dom";
-import {useCallback} from "react";
+import {useCallback, useMemo} from "react";
 
 export const useNavigate = () => {
   const navigate = useRouterNavigate();
@@ -12,14 +12,16 @@ export const useNavigate = () => {
 
 export const useFixedParams = () => {
   const [currentParams] = useSearchParams();
-  const newParams = new URLSearchParams();
   const version = currentParams.get("version");
   const api = currentParams.get("api");
-  if (version) {
-    newParams.set("version", version);
-  }
-  if (api) {
-    newParams.set("api", api);
-  }
-  return newParams.size ? `?${newParams.toString()}` : "";
+  return useMemo(() => {
+    const newParams = new URLSearchParams();
+    if (version) {
+      newParams.set("version", version);
+    }
+    if (api) {
+      newParams.set("api", api);
+    }
+    return newParams.size ? `?${newParams.toString()}` : "";
+  }, [version, api]);
 }
