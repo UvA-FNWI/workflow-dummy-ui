@@ -43,6 +43,13 @@ export type Answer = {
   isVisible: boolean
   validationError?: LocalString
   visibleChoices?: string[]
+  files: StoredFile[]
+}
+
+export type StoredFile = {
+  id: string
+  name: string
+  url: string
 }
 
 export type Action = {

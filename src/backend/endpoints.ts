@@ -1,11 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import type {EntityType, Submission, User, WorkflowInstance} from "backend/types.ts";
 import type {
+  DeleteFileParams,
   FindParams,
   GetInstanceParams,
   GetInstancesParams,
   GetSubmissionParams,
-  SaveAnswerParams
+  SaveAnswerParams, SaveFileParams
 } from "backend/params.ts";
 import type {SaveAnswerPayload, SubmitSubmissionPayload} from "backend/payloads.ts";
 import {endpoint} from "env.ts";
@@ -45,8 +46,8 @@ export const backendSlice = createApi({
     }),
     saveAnswer: build.mutation<SaveAnswerPayload, SaveAnswerParams>({
       query: (params) => ({
-        url: `Submissions/${params.instanceId}/${params.submissionId}`,
-        method: 'patch',
+        url: `Submissions/${params.instanceId}/${params.submissionId}/${params.answer.questionName}`,
+        method: 'post',
         body: params.answer
       })
     }),
@@ -63,8 +64,28 @@ export const backendSlice = createApi({
         params
       })
     }),
+    saveFile: build.mutation<void, SaveFileParams>({
+      query: (params) => ({
+        url: `Submissions/${params.instanceId}/${params.submissionId}/${params.questionName}/files`,
+        method: "post",
+        body: toFormData(params.file),
+        formData: true,
+      }),
+    }),
+    deleteFile: build.mutation<void, DeleteFileParams>({
+      query: (params) => ({
+        url: `Submissions/${params.instanceId}/${params.submissionId}/${params.questionName}/files/${params.fileId}`,
+        method: "delete"
+      }),
+    })
   })
 });
+
+const toFormData = (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  return formData;
+}
 
 export const {endpoints} = backendSlice;
 

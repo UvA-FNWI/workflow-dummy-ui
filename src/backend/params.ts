@@ -25,3 +25,23 @@ export type AnswerInput = {
 export type FindParams = {
   query: string
 }
+
+export type SaveFileParams = {
+  instanceId: string
+  submissionId: string
+  questionName: string
+  file: File
+}
+
+export type DeleteFileParams = {
+  instanceId: string
+  submissionId: string
+  questionName: string
+  fileId: string
+}
+
+export type FileParams = {
+  questionName: string
+  file?: File | null
+  deleteFileId?: string | null
+}

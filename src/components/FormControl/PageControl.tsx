@@ -9,6 +9,7 @@ import {VerticalSpace} from "components/Layout/VerticalSpace.tsx";
 import {endpoints} from "backend/endpoints.ts";
 import type {AnswerInput} from "backend/params.ts";
 import type {Page} from "backend/types.ts";
+import {useSaveFile} from "hooks/useSaveFile.ts";
 
 interface Props {
   instanceId: string
@@ -36,6 +37,7 @@ export const PageControl = ({ instanceId, submissionId, page, last, loading, nex
   const { data } = endpoints.getSubmission.useQuery({ instanceId, submissionId });
   const [form] = useForm();
   const [saveAnswer] = endpoints.saveAnswer.useMutation();
+  const saveFile = useSaveFile();
   const { t, l } = useTranslate();
 
   const save = useCallback(
@@ -92,6 +94,7 @@ export const PageControl = ({ instanceId, submissionId, page, last, loading, nex
                      rules={answer?.validationError ? [errorRule(l(answer.validationError)!)] : q.isRequired ? [requiredAnswer] : []}>
             <InputControl question={q}
                           onSave={val => save(val as AnswerInput)}
+                          onFileSave={params => saveFile(instanceId, submissionId, params)}
                           answer={answer} />
           </Form.Item>
         </Form.Item>;

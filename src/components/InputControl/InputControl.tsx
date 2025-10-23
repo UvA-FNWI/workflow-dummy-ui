@@ -7,8 +7,8 @@ import {InstanceDropdown} from "components/InstanceDropdown/InstanceDropdown.tsx
 import {useCallback, useMemo} from "react";
 import debounce from "lodash.debounce";
 import type {Answer, Question, User} from "backend/types.ts";
-import type {AnswerInput} from "backend/params.ts";
-import {endpoints} from "backend/endpoints.ts";
+import type {AnswerInput, FileParams} from "backend/params.ts";
+import {backendConfig, endpoints} from "backend/endpoints.ts";
 import {MultiplePickElement} from "components/Picker/MultiplePickElement.tsx";
 import {PickElement} from "components/Picker/PickElement.tsx";
 
@@ -17,20 +17,20 @@ interface Props {
   question: Question
   onChange?: (val: unknown) => void
   onSave?: (val: AnswerInput) => void
+  onFileSave?: (params: FileParams) => void
   answer?: Answer;
   visibleChoices?: string[] | null
 }
 
 const parseDate = (value: unknown) => value ? dayjs(value as string) : undefined;
 
-const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices }: Props) => {
+const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, onFileSave, answer }: Props) => {
   const { l, t } = useTranslate();
 
   const save = useCallback((value: unknown) => {
     onSave?.({ questionName: question.name, value });
   }, [question.name, onSave]);
   const change = (value: unknown) => {
-    console.log('hi', value);
     onChange?.(value);
     save(value);
   }
@@ -107,9 +107,9 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices }
                          showTime />
     case "File":
       return <Upload accept=".pdf" maxCount={question.isArray ? undefined : 1}
-                     beforeUpload={v => { change({ file: v }); return false; }}
-                     onRemove={v => change({ deleteFileId: +v.uid })}
-                     // defaultFileList={answer?.files?.map(f => ({ name: f.name, url: f.url ?? undefined, uid: f.id.toString() })) ?? []}
+                     beforeUpload={v => { onFileSave?.({ questionName: question.name, file: v }); return false; }}
+                     onRemove={v => onFileSave?.({ questionName: question.name, deleteFileId: v.uid })}
+                     defaultFileList={answer?.files?.map(f => ({ name: f.name, url: backendConfig.endpoint + f.url, uid: f.id.toString() })) ?? []}
       >
         <Button>{t('choose-file', { count: question.isArray ? 2 : 1 })}</Button>
       </Upload>
