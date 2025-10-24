@@ -3,36 +3,39 @@ import {useTranslate} from "hooks/useTranslate.ts";
 import {Markdown} from "components/Markdown/Markdown.tsx";
 import type {Answer, DataType, Question, User} from "backend/types.ts";
 import type {Currency} from "components/CurrencyControl/CurrencyControl.tsx";
+import {useGetFileLink} from "hooks/useGetFileLink.ts";
 
 interface Props {
   answer: Answer
   question?: Question
   type?: DataType
   isPart?: boolean
+  submissionId?: string
 }
 
-export const AnswerControl = ({ answer, question, type, isPart }: Props) => {
-  const control = <AnswerControlInternal answer={answer} question={question} type={type} isPart={isPart} />;
+export const AnswerControl = (props: Props) => {
+  const control = <AnswerControlInternal {...props} />;
   // if (answer.href)
   //   return <Link to={answer.href}>{control}</Link>
   return control;
 }
 
-const AnswerControlInternal = ({ answer, question, type, isPart }: Props) => {
+const AnswerControlInternal = ({ answer, question, type, isPart, submissionId }: Props) => {
   const { l } = useTranslate();
+  const getFileLink = useGetFileLink(submissionId);
 
   if (question?.isArray && !isPart && question.type != "File") {
     const entries = answer.value as unknown[];
     return <div>{ entries?.map((e,i) =>
       <div key={i}>
-        <AnswerControlInternal answer={{ ...answer, value: e }} question={question} type={type} isPart={true} />
+        <AnswerControlInternal answer={{ ...answer, value: e }} question={question} type={type} isPart={true} submissionId={submissionId} />
       </div>) }
     </div>;
   }
 
   switch (type ?? question?.type) {
-    // case "File":
-    //   return <>{ answer.files?.map(f => <div key={f.id}><a href={f.url ?? undefined} target="_blank">{f.name}</a></div>)}</>
+    case "File":
+      return <>{ answer.files?.map(f => <div key={f.id}><a href={getFileLink(f, question?.name ?? "Broken!")} target="_blank">{f.name}</a></div>)}</>
     case "Date":
       return formatDate(answer);
     case "DateTime":

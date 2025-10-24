@@ -49,7 +49,7 @@ export type Answer = {
 export type StoredFile = {
   id: string
   name: string
-  url: string
+  accessToken: string
 }
 
 export type Action = {

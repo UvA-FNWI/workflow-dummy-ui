@@ -46,7 +46,7 @@ export const backendSlice = createApi({
     }),
     saveAnswer: build.mutation<SaveAnswerPayload, SaveAnswerParams>({
       query: (params) => ({
-        url: `Submissions/${params.instanceId}/${params.submissionId}/${params.answer.questionName}`,
+        url: `Answers/${params.instanceId}/${params.submissionId}/${params.answer.questionName}`,
         method: 'post',
         body: params.answer
       })
@@ -66,7 +66,7 @@ export const backendSlice = createApi({
     }),
     saveFile: build.mutation<void, SaveFileParams>({
       query: (params) => ({
-        url: `Submissions/${params.instanceId}/${params.submissionId}/${params.questionName}/files`,
+        url: `Answers/${params.instanceId}/${params.submissionId}/${params.questionName}/artifacts`,
         method: "post",
         body: toFormData(params.file),
         formData: true,
@@ -74,7 +74,7 @@ export const backendSlice = createApi({
     }),
     deleteFile: build.mutation<void, DeleteFileParams>({
       query: (params) => ({
-        url: `Submissions/${params.instanceId}/${params.submissionId}/${params.questionName}/files/${params.fileId}`,
+        url: `Answers/${params.instanceId}/${params.submissionId}/${params.questionName}/artifacts/${params.fileId}`,
         method: "delete"
       }),
     })

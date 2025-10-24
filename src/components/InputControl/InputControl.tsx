@@ -8,9 +8,10 @@ import {useCallback, useMemo} from "react";
 import debounce from "lodash.debounce";
 import type {Answer, Question, User} from "backend/types.ts";
 import type {AnswerInput, FileParams} from "backend/params.ts";
-import {backendConfig, endpoints} from "backend/endpoints.ts";
+import {endpoints} from "backend/endpoints.ts";
 import {MultiplePickElement} from "components/Picker/MultiplePickElement.tsx";
 import {PickElement} from "components/Picker/PickElement.tsx";
+import {useGetFileLink} from "hooks/useGetFileLink.ts";
 
 interface Props {
   value?: unknown
@@ -34,6 +35,8 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
     onChange?.(value);
     save(value);
   }
+
+  const getFileLink = useGetFileLink();
 
   const debouncedSave = useMemo(() => debounce(save, 500), [save]);
   const debouncedChange = (value: unknown) => {
@@ -109,7 +112,11 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
       return <Upload accept=".pdf" maxCount={question.isArray ? undefined : 1}
                      beforeUpload={v => { onFileSave?.({ questionName: question.name, file: v }); return false; }}
                      onRemove={v => onFileSave?.({ questionName: question.name, deleteFileId: v.uid })}
-                     defaultFileList={answer?.files?.map(f => ({ name: f.name, url: backendConfig.endpoint + f.url, uid: f.id.toString() })) ?? []}
+                     defaultFileList={answer?.files?.map(f => ({
+                       name: f.name,
+                       url: getFileLink(f, question.name),
+                       uid: f.id.toString()
+                     })) ?? []}
       >
         <Button>{t('choose-file', { count: question.isArray ? 2 : 1 })}</Button>
       </Upload>

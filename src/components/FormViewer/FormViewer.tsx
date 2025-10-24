@@ -33,7 +33,7 @@ export const FormViewer = ({ submission }: Props) => {
                          key: t('answer'),
                          render: a => <>
                            <div style={{display: "flex", alignItems: "center"}}>
-                             <span style={{flexGrow: "1"}}><AnswerControl answer={a.answer} question={a.question} /></span>
+                             <span style={{flexGrow: "1"}}><AnswerControl submissionId={submission.id} answer={a.answer} question={a.question} /></span>
                            </div>
                          </>
                        }]}/>
