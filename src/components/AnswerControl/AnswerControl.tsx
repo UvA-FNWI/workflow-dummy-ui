@@ -1,7 +1,7 @@
 import {formatDate, formatDateTime} from "utilities/formatters.ts";
 import {useTranslate} from "hooks/useTranslate.ts";
 import {Markdown} from "components/Markdown/Markdown.tsx";
-import type {Answer, DataType, Question, User} from "backend/types.ts";
+import type {Answer, DataType, Question, StringLayoutOptions, User} from "backend/types.ts";
 import type {Currency} from "components/CurrencyControl/CurrencyControl.tsx";
 import {useGetFileLink} from "hooks/useGetFileLink.ts";
 
@@ -37,9 +37,9 @@ const AnswerControlInternal = ({ answer, question, type, isPart, submissionId }:
     case "File":
       return <>{ answer.files?.map(f => <div key={f.id}><a href={getFileLink(f, question?.name ?? "Broken!")} target="_blank">{f.name}</a></div>)}</>
     case "Date":
-      return formatDate(answer);
+      return formatDate(answer.value);
     case "DateTime":
-      return formatDateTime(answer);
+      return formatDateTime(answer.value);
     case "User":
       return (answer.value as User)?.displayName;
     case "Choice":
@@ -51,7 +51,7 @@ const AnswerControlInternal = ({ answer, question, type, isPart, submissionId }:
     // case DataType.Table:
     //   return <TableViewer answer={answer} />
   }
-  if (answer.value && question?.multiline) {
+  if (answer.value && (question?.layout as StringLayoutOptions)?.multiline) {
     return <>
       <Markdown source={answer.value as string} />
       {/*{ answer.files?.map(f => <div><a href={f.url ?? undefined} target="_blank">{f.name}</a></div>)}*/}

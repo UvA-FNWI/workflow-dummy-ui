@@ -19,11 +19,12 @@ export const WorkflowInstance = () => {
   const { instanceId: instanceIdParam } = useParams();
   const { l, t } = useTranslate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const instanceId = instanceIdParam ?? "";
 
   const { data } = endpoints.getInstance.useQuery({ id: instanceId });
-  const navigate = useNavigate();
+  const [executeAction] = endpoints.executeAction.useMutation();
 
   const [activeAction, setActiveAction] = useState<string | undefined>();
 
@@ -36,7 +37,7 @@ export const WorkflowInstance = () => {
         navigate(`form/${act.form}`);
         break;
       case "Execute":
-        //await executeAction({type: act.type, instanceId, name: act.name});
+        await executeAction({type: act.type, instanceId, name: act.name });
         break;
     }
     setActiveAction(undefined);

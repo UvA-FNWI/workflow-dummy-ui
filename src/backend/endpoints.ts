@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import type {EntityType, Submission, User, WorkflowInstance} from "backend/types.ts";
 import type {
-  DeleteFileParams,
+  DeleteFileParams, ExecuteActionParams,
   FindParams,
   GetInstanceParams,
   GetInstancesParams,
@@ -77,6 +77,13 @@ export const backendSlice = createApi({
         url: `Answers/${params.instanceId}/${params.submissionId}/${params.questionName}/artifacts/${params.fileId}`,
         method: "delete"
       }),
+    }),
+    executeAction: build.mutation<void, ExecuteActionParams>({
+      query: (params) => ({
+        url: "Actions",
+        method: "post",
+        body: params
+      })
     })
   })
 });

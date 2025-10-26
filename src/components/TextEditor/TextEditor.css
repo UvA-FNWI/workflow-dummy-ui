@@ -1,0 +1,19 @@
+.TextEditor {
+    position: relative;
+}
+
+.TextEditor:focus-within .toolbar {
+    display: block;
+}
+
+.TextEditor .toolbar {
+    position: absolute;
+    right: 0;
+    top: -30px;
+    display: none;
+}
+
+.TextEditor .toolbar button {
+    padding: 0 3px;
+    color: black;
+}

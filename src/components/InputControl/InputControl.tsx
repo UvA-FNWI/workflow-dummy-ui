@@ -6,12 +6,13 @@ import {CurrencyControl, type Currency} from "components/CurrencyControl/Currenc
 import {InstanceDropdown} from "components/InstanceDropdown/InstanceDropdown.tsx";
 import {useCallback, useMemo} from "react";
 import debounce from "lodash.debounce";
-import type {Answer, Question, User} from "backend/types.ts";
+import type {Answer, ChoiceLayoutOptions, Question, StringLayoutOptions, User} from "backend/types.ts";
 import type {AnswerInput, FileParams} from "backend/params.ts";
 import {endpoints} from "backend/endpoints.ts";
 import {MultiplePickElement} from "components/Picker/MultiplePickElement.tsx";
 import {PickElement} from "components/Picker/PickElement.tsx";
 import {useGetFileLink} from "hooks/useGetFileLink.ts";
+import {TextEditor} from "components/TextEditor/TextEditor.tsx";
 
 interface Props {
   value?: unknown
@@ -48,19 +49,22 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
   const options = choices?.map(c => ({ value: c.name, label: l(c.text) })) ?? [];
 
   switch (question.type) {
-    case "Choice":
-      if (question.layout === "RadioList" && question.isArray)
+    case "Choice": {
+      const useRadioList = (question.layout as ChoiceLayoutOptions)?.type === "RadioList";
+      if (useRadioList && question.isArray)
         return <Checkbox.Group onChange={change}
                                value={value as unknown[]}>
           <Space direction="vertical">
-            { choices?.map(o => <Checkbox key={o.name} value={o.name}><TooltipText text={o.text} description={o.description} /></Checkbox> ) }
+            {choices?.map(o => <Checkbox key={o.name} value={o.name}><TooltipText text={o.text}
+                                                                                  description={o.description}/></Checkbox>)}
           </Space>
         </Checkbox.Group>
-      else if (question.layout === "RadioList")
+      else if (useRadioList)
         return <Radio.Group onChange={v => change(v.target.value)}
-                               value={value as string}>
+                            value={value as string}>
           <Space direction="vertical">
-            { choices?.map(o => <Radio key={o.name} value={o.name}><TooltipText text={o.text} description={o.description} /></Radio> ) }
+            {choices?.map(o => <Radio key={o.name} value={o.name}><TooltipText text={o.text}
+                                                                               description={o.description}/></Radio>)}
           </Space>
         </Radio.Group>
 
@@ -72,8 +76,8 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
                        filterOption={(input, option) =>
                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                        }
-                       style={{ color: "blue" }}
-                       options={options} />
+                       style={{color: "blue"}}
+                       options={options}/>
       else
         return <Select value={value as string}
                        onChange={(v: string) => change(v)}
@@ -81,14 +85,17 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                        }
                        showSearch={options?.length > 10}
-                       options={options} />
+                       options={options}/>
+    }
     case "String":
-      // if (question.multiline)
-      //   return <>
-      //     <TextEditor value={answer}
-      //                 question={question}
-      //                 onChange={debouncedChange}/>
-      //   </>
+      if ((question.layout as StringLayoutOptions)?.multiline)
+        return <>
+          <TextEditor value={value as string ?? undefined}
+                      files={answer?.files}
+                      question={question}
+                      onFileSave={onFileSave}
+                      onChange={debouncedChange}/>
+        </>
       if (question.isArray)
         return <Select mode="tags" value={value as string[]} onChange={change}
                        open={false}/>

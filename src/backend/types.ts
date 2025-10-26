@@ -53,6 +53,7 @@ export type StoredFile = {
 }
 
 export type Action = {
+  name: string;
   id: string
   type: ActionType
   form?: string
@@ -90,11 +91,19 @@ export type Question = {
   isRequired: boolean
   isArray: boolean
   choices: Choice[]
-  multiline: boolean
-  layout: QuestionLayout
   entityType?: string
   hideInResults: boolean;
   shortText?: LocalString;
+  layout?: StringLayoutOptions | ChoiceLayoutOptions;
+}
+
+export type StringLayoutOptions = {
+  allowAttachments: boolean;
+  multiline: boolean
+}
+
+export type ChoiceLayoutOptions = {
+  type: ChoiceLayoutType
 }
 
 export type Choice = {
@@ -107,4 +116,4 @@ export type PageLayout = "Normal" | "Condensed";
 export type ActionType = "SubmitForm" | "Execute";
 export type RoleAction = "ViewAdminTools" | "View" | "Edit" | "Submit";
 export type DataType = "File" | "Date" | "DateTime" | "User" | "Choice" | "Currency" | "Table" | "String" | "Double" | "Reference" | "Int";
-export type QuestionLayout = "RadioList";
+export type ChoiceLayoutType = "Dropdown" | "RadioList";

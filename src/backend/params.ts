@@ -1,3 +1,5 @@
+import type {ActionType} from "backend/types.ts";
+
 export type GetInstancesParams = {
   entityType: string
 }
@@ -44,4 +46,10 @@ export type FileParams = {
   questionName: string
   file?: File | null
   deleteFileId?: string | null
+}
+
+export type ExecuteActionParams = {
+  instanceId: string,
+  type: ActionType
+  name: string
 }
