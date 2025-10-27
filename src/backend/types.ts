@@ -61,6 +61,30 @@ export type Action = {
   mail?: string
 }
 
+export type Screen = {
+  name: string
+  entityType: EntityType
+  columns: ScreenColumn[]
+  rows: ScreenRow[]
+}
+export type FilterType = "None" | "Pick";
+export type DisplayType = "Normal" | "ExportOnly";
+export type SortDirection = "Ascending" | "Descending";
+
+export type ScreenColumn = {
+  id: number
+  title: LocalString
+  property: string | null
+  filterType: FilterType
+  displayType: DisplayType
+  defaultSort?: SortDirection
+  link: boolean
+}
+export type ScreenRow = {
+  id: string
+  values: Record<number, unknown>
+}
+
 export type Submission = {
   id: string
   dateSubmitted?: string

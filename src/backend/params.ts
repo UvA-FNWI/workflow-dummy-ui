@@ -13,6 +13,11 @@ export type GetSubmissionParams = {
   submissionId: string
 }
 
+export type GetScreenParams = {
+  entityType: string
+  screen: string
+}
+
 export type SaveAnswerParams = {
   instanceId: string
   submissionId: string
