@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM docker.io/nginx:1.29.2-alpine
+FROM docker.io/nginx:1.29.3-alpine
 
 RUN apk add bash
 
