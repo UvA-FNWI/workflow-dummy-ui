@@ -1,10 +1,11 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {EntityType, Submission, User, WorkflowInstance} from "backend/types.ts";
+import type {EntityType, Screen, Submission, User, WorkflowInstance} from "backend/types.ts";
 import type {
   DeleteFileParams, ExecuteActionParams,
   FindParams,
   GetInstanceParams,
   GetInstancesParams,
+  GetScreenParams,
   GetSubmissionParams,
   SaveAnswerParams, SaveFileParams
 } from "backend/params.ts";
@@ -37,6 +38,9 @@ export const backendSlice = createApi({
     }),
     getSubmission: build.query<Submission, GetSubmissionParams>({
       query: (params) => `Submissions/${params.instanceId}/${params.submissionId}`
+    }),
+    getScreen: build.query<Screen, GetScreenParams>({
+      query: (params) => `Screens/${params.entityType}/${params.screen}`
     }),
     submitSubmission: build.mutation<SubmitSubmissionPayload, GetSubmissionParams>({
       query: (params) => ({

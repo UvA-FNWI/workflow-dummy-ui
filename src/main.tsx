@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import {store} from "store.ts";
 import App from "App.tsx";
 import {WorkflowRoute} from "routing/WorkflowRoute.tsx";
+import { Screen } from 'routes/Screen.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,12 @@ const router = createBrowserRouter([
         element: <Navigate to="/instances" />,
         index: true
       },
-      WorkflowRoute
+      WorkflowRoute,
+      {
+        path: "screen/:entityType/:screen",
+        element: <Screen />
+      }
+
     ]
   }
 ])
