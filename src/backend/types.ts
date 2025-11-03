@@ -79,6 +79,7 @@ export type ScreenColumn = {
   displayType: DisplayType
   defaultSort?: SortDirection
   link: boolean
+  dataType: DataType
 }
 export type ScreenRow = {
   id: string
