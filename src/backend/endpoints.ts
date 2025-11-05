@@ -46,7 +46,24 @@ export const backendSlice = createApi({
       query: (params) => ({
         url: `Submissions/${params.instanceId}/${params.submissionId}`,
         method: 'post'
-      })
+      }),
+      async onQueryStarted(params, {dispatch, queryFulfilled}) {
+        const {data} = await queryFulfilled;
+        dispatch(
+          backendSlice.util.updateQueryData(
+            "getInstance",
+            {id: params.instanceId},
+            () => data.updatedInstance,
+          ),
+        );
+        dispatch(
+          backendSlice.util.updateQueryData(
+            "getSubmission",
+            {instanceId: params.instanceId, submissionId: params.submissionId},
+            () => data.submission,
+          ),
+        );
+      },
     }),
     saveAnswer: build.mutation<SaveAnswerPayload, SaveAnswerParams>({
       query: (params) => ({

@@ -1,4 +1,4 @@
-import type {Answer, Submission} from "backend/types.ts";
+import type {Answer, Submission, WorkflowInstance} from "backend/types.ts";
 import type {LocalString} from "hooks/useTranslate.ts";
 
 export type SaveAnswerPayload = {
@@ -8,6 +8,7 @@ export type SaveAnswerPayload = {
 
 export type SubmitSubmissionPayload = {
   submission: Submission
+  updatedInstance?: WorkflowInstance
   invalidQuestions: InvalidQuestion[]
 }
 
