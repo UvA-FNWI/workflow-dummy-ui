@@ -5,6 +5,7 @@ import { Button } from "antd";
 import {CsvExport, DataTable, ExcelExport} from "components/DataTable/DataTable.tsx";
 import {Link} from "components/Link/Link.tsx";
 import {useNavigate} from "hooks/useNavigate.ts";
+import {ScreenTable} from "components/ScreenTable/ScreenTable.tsx";
 
 interface Props {
   entityType: EntityType;
@@ -23,13 +24,14 @@ export const WorkflowInstances = ({ entityType }: Props) => {
   }
 
   const canCreateNew = true;
+  const screen = entityType.screens?.[0];
 
   return <>
     {canCreateNew && data && <Button className="gap-below"
                                      type={data.length > 0 ? 'default' : 'primary'}
                                      onClick={newInstance}>{t('new')} {l(entityType?.title)?.toLowerCase()}</Button>}
 
-    {data && <DataTable source={data}
+    {data && !screen && <DataTable source={data}
                         exports={[
                           ExcelExport<WorkflowInstance>("requests"),
                           CsvExport<WorkflowInstance>("requests")
@@ -41,5 +43,6 @@ export const WorkflowInstances = ({ entityType }: Props) => {
                             render: t => <Link to={t.id}>{t.id}</Link>
                           }
                         ]}/>}
+    {data && screen && <ScreenTable screen={screen} entityType={entityType.name} />}
   </>;
 }

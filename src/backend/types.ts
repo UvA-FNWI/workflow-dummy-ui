@@ -4,6 +4,7 @@ export type EntityType = {
   name: string
   titlePlural: LocalString
   title: LocalString
+  screens?: string[]
 }
 
 export type WorkflowInstance = {
