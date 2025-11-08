@@ -5,11 +5,7 @@ import {useTranslate} from "hooks/useTranslate.ts";
 import {endpoints} from "backend/endpoints.ts";
 import {Link} from "components/Link/Link.tsx";
 
-interface Props {
-  baseUrl?: string;
-}
-
-export const Breadcrumb = ({ baseUrl = "/" }: Props) => {
+export const Breadcrumb = () => {
   const matches = useMatches();
   const titles = useTitles();
   const addTitle = useAddTitle();
@@ -18,7 +14,6 @@ export const Breadcrumb = ({ baseUrl = "/" }: Props) => {
   const instanceId = matches[2]?.pathname.split('/')[2];
   const { data } = endpoints.getInstance.useQuery({ id: instanceId }, { skip: !instanceId || `/instances/${instanceId}` in titles });
   if (!(`/instances/${instanceId}` in titles) && data) {
-    console.log("add title", `/instances/${instanceId}`, extractTitle(data));
     addTitle(`/instances/${instanceId}`, extractTitle(data));
   }
 
@@ -37,7 +32,7 @@ export const Breadcrumb = ({ baseUrl = "/" }: Props) => {
   return <div> { filtered.map((m,i) => <span key={m.id}>
     { i === filtered.length - 1 && <span>{format(m)}</span>}
     { i < filtered.length - 1 && <>
-      { i === 0 ? <a href={baseUrl}>{format(m)}</a> : <Link to={m.pathname}>{format(m)} </Link> }
+      <Link to={m.pathname}>{format(m)}</Link>
         <span style={{ fontSize: 11, paddingRight: 5, paddingLeft: 5, color: '#aaa' }}>►</span>
     </> }
   </span>) } </div>

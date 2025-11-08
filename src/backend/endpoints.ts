@@ -70,7 +70,22 @@ export const backendSlice = createApi({
         url: `Answers/${params.instanceId}/${params.submissionId}/${params.answer.questionName}`,
         method: 'post',
         body: params.answer
-      })
+      }),
+      async onQueryStarted(params, {dispatch, queryFulfilled}) {
+        const {data} = await queryFulfilled;
+        dispatch(
+          backendSlice.util.updateQueryData(
+            "getSubmission",
+            {instanceId: params.instanceId, submissionId: params.submissionId},
+            (current) => {
+              current.answers = current.answers.map(oldAnswer => {
+                const newAnswer = data.answers.filter(a => a.id === oldAnswer.id)[0];
+                return newAnswer ?? oldAnswer;
+              });
+            }
+          )
+        )
+      }
     }),
     createInstance: build.mutation<WorkflowInstance, GetInstancesParams>({
       query: (body) => ({
