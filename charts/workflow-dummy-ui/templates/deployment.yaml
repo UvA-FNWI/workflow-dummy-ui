@@ -25,3 +25,7 @@ spec:
               value: "{{ .Chart.AppVersion }}"
             - name: ENDPOINT
               value: "{{ .Values.endpoint }}"
+            - name: OIDC_CLIENT_ID
+              value: "{{ .Values.oidc.clientId }}"
+            - name: OIDC_AUTHORITY
+              value: "{{ .Values.oidc.authority }}"

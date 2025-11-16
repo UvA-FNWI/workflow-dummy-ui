@@ -4,3 +4,7 @@ tag: latest
 registry: datanosecr.azurecr.io
   
 endpoint: workflow-api.local
+
+oidc:
+  clientId: clientId
+  authority: authority

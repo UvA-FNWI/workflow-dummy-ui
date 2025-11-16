@@ -11,6 +11,7 @@ import type {
 } from "backend/params.ts";
 import type {SaveAnswerPayload, SubmitSubmissionPayload} from "backend/payloads.ts";
 import {endpoint} from "env.ts";
+import {getAccessToken} from "auth.tsx";
 
 const params = new URLSearchParams(window.location.search);
 export const backendConfig = {
@@ -24,6 +25,12 @@ export const backendSlice = createApi({
     baseUrl: backendConfig.endpoint,
     headers: {
       "Workflow-Version": backendConfig.version
+    },
+    prepareHeaders: (headers) => {
+      const token = getAccessToken();
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
     }
   }),
   endpoints: (build) => ({
