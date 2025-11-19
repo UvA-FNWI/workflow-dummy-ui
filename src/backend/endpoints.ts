@@ -7,7 +7,7 @@ import type {
   GetInstancesParams,
   GetScreenParams,
   GetSubmissionParams,
-  SaveAnswerParams, SaveFileParams
+  SaveAnswerParams, SaveFileParams, UndoEventParams
 } from "backend/params.ts";
 import type {SaveAnswerPayload, SubmitSubmissionPayload} from "backend/payloads.ts";
 import {endpoint} from "env.ts";
@@ -21,6 +21,7 @@ export const backendConfig = {
 
 export const backendSlice = createApi({
   reducerPath: 'api',
+  tagTypes: ["WorkflowInstance"],
   baseQuery: fetchBaseQuery({
     baseUrl: backendConfig.endpoint,
     headers: {
@@ -38,7 +39,8 @@ export const backendSlice = createApi({
       query: () => 'EntityTypes'
     }),
     getInstance: build.query<WorkflowInstance, GetInstanceParams>({
-      query: (params) => `WorkflowInstances/${params.id}`
+      query: (params) => `WorkflowInstances/${params.id}`,
+      providesTags: ["WorkflowInstance"]
     }),
     getInstances: build.query<WorkflowInstance[], GetInstancesParams>({
       query: (params) => `WorkflowInstances/instances/${params.entityType}`
@@ -48,6 +50,13 @@ export const backendSlice = createApi({
     }),
     getScreen: build.query<Screen, GetScreenParams>({
       query: (params) => `Screens/${params.entityType}/${params.screen}`
+    }),
+    undoEvent: build.mutation<void, UndoEventParams>({
+      query: (params) => ({
+        url: `/WorkflowInstances/${params.instanceId}/Events/${params.eventName}`,
+        method: 'delete'
+      }),
+      invalidatesTags: ["WorkflowInstance"]
     }),
     submitSubmission: build.mutation<SubmitSubmissionPayload, GetSubmissionParams>({
       query: (params) => ({

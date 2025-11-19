@@ -54,7 +54,12 @@ export type FileParams = {
 }
 
 export type ExecuteActionParams = {
-  instanceId: string,
+  instanceId: string
   type: ActionType
   name: string
+}
+
+export type UndoEventParams = {
+  instanceId: string
+  eventName: string
 }

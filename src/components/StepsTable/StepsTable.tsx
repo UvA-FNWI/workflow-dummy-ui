@@ -4,6 +4,7 @@ import {useTranslate} from "hooks/useTranslate.ts";
 import {Button} from "antd";
 import {UndoOutlined} from "@ant-design/icons";
 import type {Step} from "backend/types.ts";
+import {endpoints} from "backend/endpoints.ts";
 
 interface Props {
   instanceId: string;
@@ -13,7 +14,7 @@ interface Props {
 
 export const StepsTable = ({ steps, instanceId, enableUndo }: Props) => {
   const { l, t } = useTranslate();
-  //const undoEvent = useUndoEvent();
+  const [undoEvent] = endpoints.undoEvent.useMutation();
 
   return <>
     <h3>{t("steps")}</h3>
@@ -30,7 +31,7 @@ export const StepsTable = ({ steps, instanceId, enableUndo }: Props) => {
         key: t('undo'),
         render: s => s.dateCompleted && s.event &&
             <Button type="link"
-                    onClick={() => { console.log("undo", s.event, instanceId); }}>
+                    onClick={() => undoEvent({ instanceId, eventName: s.event ?? "" })}>
                 <UndoOutlined />
             </Button>,
         hide: !enableUndo
