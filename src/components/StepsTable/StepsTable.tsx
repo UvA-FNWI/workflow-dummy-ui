@@ -28,6 +28,10 @@ export const StepsTable = ({ steps, instanceId, enableUndo }: Props) => {
         value: s => formatDateTime(s.dateCompleted)
       },
       {
+        key: t('deadline'),
+        value: s => formatDateTime(s.deadline)
+      },
+      {
         key: t('undo'),
         render: s => s.dateCompleted && s.event &&
             <Button type="link"

@@ -43,7 +43,7 @@ const AnswerControlInternal = ({ answer, question, type, isPart, submissionId }:
     case "User":
       return (answer.value as User)?.displayName;
     case "Choice":
-      return l(question?.choices?.filter(c => c.name === answer.value)[0]?.text);
+      return question ? l(question?.choices?.filter(c => c.name === answer.value)[0]?.text) : answer.value?.toString();
     case "Currency": {
       const currency = answer.value as Currency;
       return `${currency?.currency} ${currency?.amount}`;

@@ -16,6 +16,7 @@ export type WorkflowInstance = {
   permissions: RoleAction[]
   fields: Field[]
   steps: Step[]
+  currentStep?: string
 }
 
 export type Step = {
@@ -23,6 +24,7 @@ export type Step = {
   event?: string | null;
   title: LocalString;
   dateCompleted?: string;
+  deadline?: string;
   children?: Step[] | null;
 }
 

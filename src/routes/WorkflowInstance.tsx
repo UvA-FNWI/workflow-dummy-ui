@@ -57,6 +57,9 @@ export const WorkflowInstance = () => {
             <Descriptions.Item label={t("title")}>
               {data.title}
             </Descriptions.Item>
+            <Descriptions.Item label={t("step")}>
+              {data.currentStep}
+            </Descriptions.Item>
           { data.fields.map((f,i) =>
             <Descriptions.Item key={i} label={l(f.label)}>
               {f.value?.toString()}

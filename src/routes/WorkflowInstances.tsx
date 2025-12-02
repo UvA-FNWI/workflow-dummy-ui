@@ -12,7 +12,9 @@ interface Props {
 }
 
 export const WorkflowInstances = ({ entityType }: Props) => {
-  const {data} = endpoints.getInstances.useQuery({entityType: entityType.name});
+  const screen = entityType.screens?.[0];
+
+  const {data} = endpoints.getInstances.useQuery({entityType: entityType.name}, { skip: !!screen });
   const navigate = useNavigate();
   const [createInstance] = endpoints.createInstance.useMutation();
   const {l, t} = useTranslate();
@@ -24,11 +26,10 @@ export const WorkflowInstances = ({ entityType }: Props) => {
   }
 
   const canCreateNew = true;
-  const screen = entityType.screens?.[0];
 
   return <>
-    {canCreateNew && data && <Button className="gap-below"
-                                     type={data.length > 0 ? 'default' : 'primary'}
+    {canCreateNew && <Button className="gap-below"
+                                     type={data?.length ?? 1 > 0 ? 'default' : 'primary'}
                                      onClick={newInstance}>{t('new')} {l(entityType?.title)?.toLowerCase()}</Button>}
 
     {data && !screen && <DataTable source={data}
@@ -43,6 +44,6 @@ export const WorkflowInstances = ({ entityType }: Props) => {
                             render: t => <Link to={t.id}>{t.id}</Link>
                           }
                         ]}/>}
-    {data && screen && <ScreenTable screen={screen} entityType={entityType.name} />}
+    {screen && <ScreenTable screen={screen} entityType={entityType.name} />}
   </>;
 }
