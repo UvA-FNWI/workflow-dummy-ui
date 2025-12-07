@@ -6,7 +6,7 @@ import {endpoints} from "backend/endpoints.ts";
 
 export const Main = () => {
   const { l } = useTranslate();
-  const { data } = endpoints.getEntityTypes.useQuery({});
+  const { data } = endpoints.getWorkflowDefinitions.useQuery({});
   const [searchParams, setSearchParams] = useSearchParams();
 
   if (!data) {
@@ -18,7 +18,7 @@ export const Main = () => {
   }
 
   if (data.length == 1) {
-    return <WorkflowInstances entityType={data[0]} />
+    return <WorkflowInstances workflowDefinition={data[0]} />
   }
 
   return <Tabs
@@ -30,6 +30,6 @@ export const Main = () => {
     items={data.map(t => ({
       key: t.name,
       label: l(t.titlePlural),
-      children: <WorkflowInstances entityType={t} />
+      children: <WorkflowInstances workflowDefinition={t} />
     }))} />
 }

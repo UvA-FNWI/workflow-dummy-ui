@@ -2,11 +2,11 @@ import { useParams } from "react-router-dom";
 import {ScreenTable} from "components/ScreenTable/ScreenTable.tsx";
 
 export const Screen = () => {
-  const { entityType, screen } = useParams();
+  const { workflowDefinition, screen } = useParams();
 
-  if (!entityType || !screen) {
+  if (!workflowDefinition || !screen) {
     return <div>Invalid parameters</div>;
   }
 
-  return <ScreenTable entityType={entityType} screen={screen} />
+  return <ScreenTable workflowDefinition={workflowDefinition} screen={screen} />
 };

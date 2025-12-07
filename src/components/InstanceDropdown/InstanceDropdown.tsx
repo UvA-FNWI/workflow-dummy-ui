@@ -3,12 +3,12 @@ import {Select} from "antd";
 interface Props {
   value: string | null | undefined
   onInput: (value: string) => void;
-  entityType: string
+  workflowDefinition: string
 }
 
-export const InstanceDropdown = ({ value, onInput, entityType }: Props) =>
+export const InstanceDropdown = ({ value, onInput, workflowDefinition }: Props) =>
 {
-  console.log("TODO: get instances", entityType);
+  console.log("TODO: get instances", workflowDefinition);
 
   return <Select value={value}
                  options={[]}

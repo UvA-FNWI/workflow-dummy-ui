@@ -41,7 +41,7 @@ export const useAddTitle = () => {
 
 export const useTitles = () => useSelector((state: RootState) => state.titles)
 
-export const extractTitle = (instance: { title: string, entityType: { titlePlural: LocalString } } | null) => ({
+export const extractTitle = (instance: { title: string, workflowDefinition: { titlePlural: LocalString } } | null) => ({
   title: {en: instance?.title ?? "New request", nl: instance?.title ?? "Nieuw verzoek"},
-  parent: instance?.entityType.titlePlural ?? {en: "Requests", nl: "Verzoeken"}
+  parent: instance?.workflowDefinition.titlePlural ?? {en: "Requests", nl: "Verzoeken"}
 })

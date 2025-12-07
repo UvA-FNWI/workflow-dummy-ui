@@ -149,9 +149,9 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
         onChange={c => debouncedChange(c)}
       />
     case "Reference":
-      return question.entityType && <InstanceDropdown value={value as string}
-                               onInput={i => change(i)}
-                               entityType={question.entityType} />
+      return question.workflowDefinition && <InstanceDropdown value={value as string}
+                                                              onInput={i => change(i)}
+                                                              workflowDefinition={question.workflowDefinition} />
   }
   return <Input />
 }

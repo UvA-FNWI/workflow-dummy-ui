@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {EntityType, Screen, Submission, User, WorkflowInstance} from "backend/types.ts";
+import type {WorkflowDefinition, Screen, Submission, User, WorkflowInstance} from "backend/types.ts";
 import type {
   DeleteFileParams, ExecuteActionParams,
   FindParams,
@@ -35,21 +35,21 @@ export const backendSlice = createApi({
     }
   }),
   endpoints: (build) => ({
-    getEntityTypes: build.query<EntityType[], unknown>({
-      query: () => 'EntityTypes'
+    getWorkflowDefinitions: build.query<WorkflowDefinition[], unknown>({
+      query: () => 'WorkflowDefinitions'
     }),
     getInstance: build.query<WorkflowInstance, GetInstanceParams>({
       query: (params) => `WorkflowInstances/${params.id}`,
       providesTags: ["WorkflowInstance"]
     }),
     getInstances: build.query<WorkflowInstance[], GetInstancesParams>({
-      query: (params) => `WorkflowInstances/instances/${params.entityType}`
+      query: (params) => `WorkflowInstances/instances/${params.workflowDefinition}`
     }),
     getSubmission: build.query<Submission, GetSubmissionParams>({
       query: (params) => `Submissions/${params.instanceId}/${params.submissionId}`
     }),
     getScreen: build.query<Screen, GetScreenParams>({
-      query: (params) => `Screens/${params.entityType}/${params.screen}`
+      query: (params) => `Screens/${params.workflowDefinition}/${params.screen}`
     }),
     undoEvent: build.mutation<void, UndoEventParams>({
       query: (params) => ({

@@ -1,7 +1,7 @@
 import type {ActionType} from "backend/types.ts";
 
 export type GetInstancesParams = {
-  entityType: string
+  workflowDefinition: string
 }
 
 export type GetInstanceParams = {
@@ -14,7 +14,7 @@ export type GetSubmissionParams = {
 }
 
 export type GetScreenParams = {
-  entityType: string
+  workflowDefinition: string
   screen: string
 }
 

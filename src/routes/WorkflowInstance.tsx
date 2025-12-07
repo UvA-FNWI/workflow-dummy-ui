@@ -85,7 +85,7 @@ export const WorkflowInstance = () => {
                     key: k,
                     label: l(sub.form.title),
                     children: <>
-                      { multiple && <MultipleFormViewer entityType={data.entityType.name}
+                      { multiple && <MultipleFormViewer workflowDefinition={data.workflowDefinition.name}
                                                         instanceId={instanceId}
                                                         formName={k} /> }
                       { !multiple && <FormViewer submission={sub} /> }

@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       },
       WorkflowRoute,
       {
-        path: "screen/:entityType/:screen",
+        path: "screen/:workflowDefinition/:screen",
         element: <Screen />
       }
 

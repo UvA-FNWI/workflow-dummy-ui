@@ -1,6 +1,6 @@
 import type {LocalString} from "hooks/useTranslate.ts";
 
-export type EntityType = {
+export type WorkflowDefinition = {
   name: string
   titlePlural: LocalString
   title: LocalString
@@ -10,7 +10,7 @@ export type EntityType = {
 export type WorkflowInstance = {
   id: string
   title: string
-  entityType: EntityType
+  workflowDefinition: WorkflowDefinition
   actions: Action[]
   submissions: Submission[]
   permissions: RoleAction[]
@@ -66,7 +66,7 @@ export type Action = {
 
 export type Screen = {
   name: string
-  entityType: EntityType
+  workflowDefinition: WorkflowDefinition
   columns: ScreenColumn[]
   rows: ScreenRow[]
 }
@@ -119,7 +119,7 @@ export type Question = {
   isRequired: boolean
   isArray: boolean
   choices: Choice[]
-  entityType?: string
+  workflowDefinition?: string
   hideInResults: boolean;
   shortText?: LocalString;
   layout?: StringLayoutOptions | ChoiceLayoutOptions;

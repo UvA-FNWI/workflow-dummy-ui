@@ -7,12 +7,12 @@ import {Link} from "react-router-dom";
 import {AnswerControl} from "components/AnswerControl/AnswerControl.tsx";
 
 interface Props {
-  entityType: string
+  workflowDefinition: string
   screen: string
 }
 
-export const ScreenTable = ({ entityType, screen }: Props) => {
-  const {data, isLoading} = endpoints.getScreen.useQuery({entityType, screen});
+export const ScreenTable = ({ workflowDefinition, screen }: Props) => {
+  const {data, isLoading} = endpoints.getScreen.useQuery({workflowDefinition, screen});
   const { l } = useTranslate();
 
   if (isLoading) return <div><i>Loading...</i></div>;
