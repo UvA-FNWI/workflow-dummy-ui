@@ -29,11 +29,11 @@ export const FormControl = ({ instanceId, submissionId }: Props) => {
       setLoading(true);
       const res = await submitSubmission({instanceId, submissionId});
       setLoading(false);
-      const invalid = res.data?.invalidQuestions;
+      const invalid = res.data?.validationErrors;
       if (invalid) {
         alert(l({
-          en: `Please enter valid values for ${invalid.map(m => `${m.questionName.en} (${m.validationError.en})}`).join(", ")}`,
-          nl: `Geef geldige waardes op voor ${invalid.map(m => `${m.questionName.nl} (${m.validationError.nl})}`).join(", ")}`
+          en: `Please enter valid values for ${invalid.map(m => `${m.questionName} (${m.validationMessage.en})}`).join(", ")}`,
+          nl: `Geef geldige waardes op voor ${invalid.map(m => `${m.questionName} (${m.validationMessage.nl})}`).join(", ")}`
         }));
         return;
       }
