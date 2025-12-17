@@ -9,10 +9,10 @@ export type SaveAnswerPayload = {
 export type SubmitSubmissionPayload = {
   submission: Submission
   updatedInstance?: WorkflowInstance
-  invalidQuestions: InvalidQuestion[]
+  validationErrors: ValidationError[]
 }
 
-export type InvalidQuestion = {
+export type ValidationError = {
   questionName: LocalString,
-  validationError: LocalString
+  validationMessage: LocalString
 }

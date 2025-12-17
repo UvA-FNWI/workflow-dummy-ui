@@ -29,7 +29,7 @@ export type Step = {
 }
 
 export type Field = {
-  label: LocalString
+  title: LocalString
   value: unknown
 }
 
