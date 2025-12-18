@@ -5,7 +5,7 @@ import {FormViewer} from "components/FormViewer/FormViewer.tsx";
 import {Button, Descriptions, Tabs} from "antd";
 import {MultipleFormViewer} from "components/FormViewer/MultipleFormViewer.tsx";
 import {useState} from "react";
-import {useTranslate} from "hooks/useTranslate.ts";
+import {type LocalString, useTranslate} from "hooks/useTranslate.ts";
 import {ActionButton} from "components/Actions/ActionButton.tsx";
 import {StepsTable} from "components/StepsTable/StepsTable.tsx";
 import {endpoints} from "backend/endpoints.ts";
@@ -62,8 +62,7 @@ export const WorkflowInstance = () => {
             </Descriptions.Item>
           { data.fields.filter(f => f.value).map((f,i) =>
             <Descriptions.Item key={i} label={l(f.title)}>
-              {f.value?.toString()}
-              {/*<AnswerControl answer={f.value} />*/}
+              {(f.value as LocalString)?.en ? l(f.value as LocalString) : f.value?.toString()}
             </Descriptions.Item>)
           }
           { !!data.actions.length && <Descriptions.Item label="Actions">
