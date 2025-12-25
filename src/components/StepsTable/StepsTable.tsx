@@ -29,7 +29,8 @@ export const StepsTable = ({ steps, instanceId, enableUndo }: Props) => {
       },
       {
         key: t('deadline'),
-        value: s => formatDateTime(s.deadline)
+        value: s => formatDateTime(s.deadline),
+        hide: !steps.filter(s => s.deadline).length
       },
       {
         key: t('undo'),
