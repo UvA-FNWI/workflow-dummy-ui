@@ -122,7 +122,8 @@ export type Question = {
   workflowDefinition?: string
   hideInResults: boolean;
   shortText?: LocalString;
-  layout?: StringLayoutOptions | ChoiceLayoutOptions;
+  layout?: StringLayoutOptions | ChoiceLayoutOptions | TableLayoutOptions;
+  subProperties?: Question[];
 }
 
 export type StringLayoutOptions = {
@@ -134,6 +135,10 @@ export type ChoiceLayoutOptions = {
   type: ChoiceLayoutType
 }
 
+export type TableLayoutOptions = {
+  type: TableLayoutType
+}
+
 export type Choice = {
   name: string
   description?: LocalString
@@ -143,5 +148,6 @@ export type Choice = {
 export type PageLayout = "Normal" | "Condensed";
 export type ActionType = "SubmitForm" | "Execute";
 export type RoleAction = "ViewAdminTools" | "View" | "Edit" | "Submit";
-export type DataType = "File" | "Date" | "DateTime" | "User" | "Choice" | "Currency" | "Table" | "String" | "Double" | "Reference" | "Int";
+export type DataType = "File" | "Date" | "DateTime" | "User" | "Choice" | "Currency" | "Object" | "String" | "Double" | "Reference" | "Int";
 export type ChoiceLayoutType = "Dropdown" | "RadioList";
+export type TableLayoutType = "InlineEditing" | "Modal";

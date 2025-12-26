@@ -13,6 +13,7 @@ import {MultiplePickElement} from "components/Picker/MultiplePickElement.tsx";
 import {PickElement} from "components/Picker/PickElement.tsx";
 import {useGetFileLink} from "hooks/useGetFileLink.ts";
 import {TextEditor} from "components/TextEditor/TextEditor.tsx";
+import {InputTable} from "components/InputControl/InputTable.tsx";
 
 interface Props {
   value?: unknown
@@ -127,9 +128,13 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
       >
         <Button>{t('choose-file', { count: question.isArray ? 2 : 1 })}</Button>
       </Upload>
-    // case "Table":
-    //   return <InputTable question={question} value={answer?.value}
-    //                      onChange={v => debouncedChange(v)} />
+    case "Object":
+      if (question.isArray) {
+        return <InputTable question={question} value={answer?.value as unknown[]}
+                           onChange={v => debouncedChange(v)}/>
+      } else {
+        return "Not implemented";
+      }
     case "User":
       if (question.isArray)
         return <MultiplePickElement value={value as User[]}
