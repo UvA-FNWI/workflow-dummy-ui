@@ -8,6 +8,10 @@ export type GetInstanceParams = {
   id: string
 }
 
+export type GetMessagesParams = {
+  instanceId: string
+}
+
 export type GetSubmissionParams = {
   instanceId: string
   submissionId: string
@@ -47,6 +51,14 @@ export type DeleteFileParams = {
   fileId: string
 }
 
+export type AddMessageParams = {
+  instanceId: string
+  questionName?: string
+  body?: string
+  replyToId?: string | null
+  kind?: MessageKind
+}
+
 export type FileParams = {
   questionName: string
   file?: File | null
@@ -63,3 +75,5 @@ export type UndoEventParams = {
   instanceId: string
   eventName: string
 }
+
+export type MessageKind = "Message" | "Close";

@@ -64,6 +64,19 @@ export type Action = {
   mail?: string
 }
 
+export type Message = {
+  id: string
+  questionName?: string
+  items: MessageItem[]
+  isClosed: boolean
+}
+
+export type MessageItem = {
+  dateTime: string
+  user: User
+  body: string
+}
+
 export type Screen = {
   name: string
   workflowDefinition: WorkflowDefinition

@@ -2,11 +2,13 @@ import {DataTable} from "components/DataTable/DataTable.tsx";
 import {AnswerControl} from "components/AnswerControl/AnswerControl.tsx";
 import {useTranslate} from "hooks/useTranslate.ts";
 import type {Answer, Submission} from "backend/types.ts";
+import {MessagesButton} from "components/Messages/MessagesButton.tsx";
 
 interface Props {
+  instanceId: string
   submission: Submission
 }
-export const FormViewer = ({ submission }: Props) => {
+export const FormViewer = ({ instanceId, submission }: Props) => {
   const model = submission.form;
   const { l, t } = useTranslate();
 
@@ -33,7 +35,10 @@ export const FormViewer = ({ submission }: Props) => {
                          key: t('answer'),
                          render: a => <>
                            <div style={{display: "flex", alignItems: "center"}}>
-                             <span style={{flexGrow: "1"}}><AnswerControl submissionId={submission.id} answer={a.answer} question={a.question} /></span>
+                             <span style={{flexGrow: "1"}}>
+                               <AnswerControl submissionId={submission.id} answer={a.answer} question={a.question} />
+                             </span>
+                             <MessagesButton questionName={a.question.name} instanceId={instanceId} />
                            </div>
                          </>
                        }]}/>

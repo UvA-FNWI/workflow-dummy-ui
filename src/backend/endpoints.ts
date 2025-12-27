@@ -1,10 +1,11 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {WorkflowDefinition, Screen, Submission, User, WorkflowInstance} from "backend/types.ts";
+import type {WorkflowDefinition, Screen, Submission, User, WorkflowInstance, Message} from "backend/types.ts";
 import type {
+  AddMessageParams,
   DeleteFileParams, ExecuteActionParams,
   FindParams,
   GetInstanceParams,
-  GetInstancesParams,
+  GetInstancesParams, GetMessagesParams,
   GetScreenParams,
   GetSubmissionParams,
   SaveAnswerParams, SaveFileParams, UndoEventParams
@@ -136,6 +137,33 @@ export const backendSlice = createApi({
         method: "post",
         body: params
       })
+    }),
+    getMessages: build.query<Message[], GetMessagesParams>({
+      query: (params) => `Messages/${params.instanceId}`
+    }),
+    addMessage: build.mutation<Message, AddMessageParams>({
+      query: (params) => ({
+        url: `Messages/${params.instanceId}`,
+        method: 'post',
+        body: params
+      }),
+      async onQueryStarted(params, {dispatch, queryFulfilled}) {
+        const {data} = await queryFulfilled;
+        dispatch(
+          backendSlice.util.updateQueryData(
+            "getMessages",
+            {instanceId: params.instanceId},
+            (current) => {
+              const index = current.findIndex(m => m.id === data.id);
+              if (index >= 0) {
+                current.splice(index, 1, data);
+              } else {
+                current.push(data);
+              }
+            }
+          )
+        )
+      }
     })
   })
 });
