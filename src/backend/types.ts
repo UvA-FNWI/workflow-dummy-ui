@@ -158,6 +158,11 @@ export type Choice = {
   text: LocalString
 }
 
+export type LinkInfo = {
+  token: string
+  formTokens: { [form: string]: string }
+}
+
 export type PageLayout = "Normal" | "Condensed";
 export type ActionType = "SubmitForm" | "Execute";
 export type RoleAction = "ViewAdminTools" | "View" | "Edit" | "Submit";

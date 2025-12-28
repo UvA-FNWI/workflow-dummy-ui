@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {WorkflowDefinition, Screen, Submission, User, WorkflowInstance, Message} from "backend/types.ts";
+import type {WorkflowDefinition, Screen, Submission, User, WorkflowInstance, Message, LinkInfo} from "backend/types.ts";
 import type {
   AddMessageParams,
   DeleteFileParams, ExecuteActionParams,
@@ -137,6 +137,9 @@ export const backendSlice = createApi({
         method: "post",
         body: params
       })
+    }),
+    getPdfLinks: build.query<LinkInfo, GetMessagesParams>({
+      query: (params) => `Pdf/${params.instanceId}`
     }),
     getMessages: build.query<Message[], GetMessagesParams>({
       query: (params) => `Messages/${params.instanceId}`

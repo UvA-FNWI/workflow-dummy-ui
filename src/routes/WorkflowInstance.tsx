@@ -8,22 +8,24 @@ import {useState} from "react";
 import {type LocalString, useTranslate} from "hooks/useTranslate.ts";
 import {ActionButton} from "components/Actions/ActionButton.tsx";
 import {StepsTable} from "components/StepsTable/StepsTable.tsx";
-import {endpoints} from "backend/endpoints.ts";
+import {backendConfig, endpoints} from "backend/endpoints.ts";
 import type {Action} from "backend/types.ts";
 import {Link} from "components/Link/Link.tsx";
 import {extractTitle, useSetTitle} from "hooks/useTitles.ts";
 import {useNavigate} from "hooks/useNavigate.ts";
 import {Navigate} from "components/Link/Navigate.tsx";
+import {FilePdfOutlined} from "@ant-design/icons";
 
 export const WorkflowInstance = () => {
   const { instanceId: instanceIdParam } = useParams();
-  const { l, t } = useTranslate();
+  const { l, t, i18n } = useTranslate();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const instanceId = instanceIdParam ?? "";
 
   const { data } = endpoints.getInstance.useQuery({ id: instanceId });
+  const { data: linkInfo } = endpoints.getPdfLinks.useQuery({ instanceId });
   const [executeAction] = endpoints.executeAction.useMutation();
 
   const [activeAction, setActiveAction] = useState<string | undefined>();
@@ -55,7 +57,7 @@ export const WorkflowInstance = () => {
     {data && <div>
         <Descriptions bordered column={1} style={{ width: "400px", marginBottom: "30px", marginTop: "20px" }}>
             <Descriptions.Item label={t("title")}>
-              {data.title}
+              {data.title} { linkInfo && <a href={`${backendConfig.endpoint}/Pdf/${instanceId}/Document?token=${linkInfo.token}&language=${i18n.language}`}><FilePdfOutlined /></a> }
             </Descriptions.Item>
             <Descriptions.Item label={t("step")}>
               {data.currentStep}
