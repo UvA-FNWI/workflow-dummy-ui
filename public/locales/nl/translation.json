@@ -8,6 +8,7 @@
   "add-row": "Rij toevoegen",
   "answer": "Antwoord",
   "assigned-to": "Toegewezen aan",
+  "app-title": "Workflow dummy UI",
   "back": "Terug",
   "cancel": "Annuleren",
   "choose": "Kiezen...",
@@ -26,6 +27,7 @@
   "form": "Formulier",
   "history": "Geschiedenis",
   "instances": "Verzoeken",
+  "logout": "Uitloggen",
   "main": "Hoofdpagina",
   "messages": {
     "add": "Opmerking toevoegen",

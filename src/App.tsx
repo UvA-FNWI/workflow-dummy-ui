@@ -9,28 +9,25 @@ import {useAuth} from "react-oidc-context";
 function App() {
   const { i18n, t } = useTranslation();
 
-  const { signoutRedirect } = useAuth();
+  const { signoutRedirect, user } = useAuth();
 
   return (
     <div className="App">
       <header className="App-header">
-        <div style={{ float: 'right', fontSize: "12px", textAlign: "right" }}>
-          <div>Endpoint: {backendConfig.endpoint}, version: {backendConfig.version ? backendConfig.version : "default"} (
-            <Button
-              type="link"
-              style={{ padding: 0, fontSize: "12px" }}
-              onClick={() => signoutRedirect({ post_logout_redirect_uri: "https://engine.test.surfconext.nl/logout" })}>
-              {t("logout")}
-            </Button>)
-          </div>
-          <div>
-            <Button type="link" style={{ padding: "0" }} onClick={() => i18n.changeLanguage(i18n.language === "en" ? "nl" : "en")}>Language: {i18n.language}</Button>
+        <div className="top-bar">
+          {/*<img src="/logo.png" alt="logo UvA/HvA" />*/}
+          <h1 style={{ paddingLeft: "10px" }}>{t('app-title')}</h1>
+        </div>
+        <div className="breadcrumb-bar">
+          <Breadcrumb />
+          <div className="actions">
+            <a onClick={() => i18n.changeLanguage(i18n.language === "nl" ? "en" : "nl")}>{i18n.language.toUpperCase()}</a>
+            <a onClick={() => signoutRedirect()}>{t('logout')} ({user?.profile?.name})</a>
           </div>
         </div>
-        <h1>Workflow</h1>
-        <div className="App-header-text">
-
-          <Breadcrumb/>
+        <div style={{ float: 'right', fontSize: "12px", textAlign: "right", padding: "5px 10px" }}>
+          <div>Endpoint: {backendConfig.endpoint}, version: {backendConfig.version ? backendConfig.version : "default"}
+          </div>
         </div>
       </header>
       <main>

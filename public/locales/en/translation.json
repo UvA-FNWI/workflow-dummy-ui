@@ -7,6 +7,7 @@
   "add": "Add",
   "add-row": "Add row",
   "answer": "Answer",
+  "app-title": "Workflow dummy UI",
   "assigned-to": "Assigned to",
   "back": "Back",
   "cancel": "Cancel",
@@ -26,6 +27,7 @@
   "form": "Form",
   "history": "State history",
   "instances": "Requests",
+  "logout": "Log out",
   "main": "Main page",
   "messages": {
     "add": "Add comment",
