@@ -3,8 +3,8 @@ import type {QuestionContext} from "backend/types.ts";
 import {ChoiceInputControl} from "components/InputControl/ChoiceInputControl.tsx";
 
 interface Props {
-  value: string | null | undefined
-  onInput: (value: string) => void;
+  value: unknown
+  onInput: (value: unknown) => void;
   workflowDefinition: string
   context: QuestionContext
 }

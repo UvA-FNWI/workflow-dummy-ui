@@ -28,7 +28,7 @@ interface Props {
 const parseDate = (value: unknown) => value ? dayjs(value as string) : undefined;
 
 const InputFieldControl = ({ value, context, onChange, onSave, visibleChoices, onFileSave, answer }: Props) => {
-  const { l, t } = useTranslate();
+  const { t } = useTranslate();
 
   const question = context.question;
 
@@ -119,8 +119,8 @@ const InputFieldControl = ({ value, context, onChange, onSave, visibleChoices, o
         onChange={c => debouncedChange(c)}
       />
     case "Reference":
-      return question.workflowDefinition && <InstanceDropdown value={value as string}
-                                                              onInput={i => change(i)}
+      return question.workflowDefinition && <InstanceDropdown value={value}
+                                                              onInput={change}
                                                               context={context}
                                                               workflowDefinition={question.workflowDefinition} />
   }
