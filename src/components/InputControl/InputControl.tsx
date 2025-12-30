@@ -1,12 +1,11 @@
-import {Button, Checkbox, DatePicker, Input, InputNumber, Radio, Select, Space, Upload} from "antd";
+import {Button, DatePicker, Input, InputNumber, Select, Upload} from "antd";
 import dayjs from "dayjs";
-import {TooltipText} from "components/TooltipText/TooltipText.tsx";
 import {useTranslate} from "hooks/useTranslate.ts";
 import {CurrencyControl, type Currency} from "components/CurrencyControl/CurrencyControl.tsx";
 import {InstanceDropdown} from "components/InstanceDropdown/InstanceDropdown.tsx";
 import {useCallback, useMemo} from "react";
 import debounce from "lodash.debounce";
-import type {Answer, ChoiceLayoutOptions, Question, StringLayoutOptions, User} from "backend/types.ts";
+import type {Answer, QuestionContext, StringLayoutOptions, User} from "backend/types.ts";
 import type {AnswerInput, FileParams} from "backend/params.ts";
 import {endpoints} from "backend/endpoints.ts";
 import {MultiplePickElement} from "components/Picker/MultiplePickElement.tsx";
@@ -14,10 +13,11 @@ import {PickElement} from "components/Picker/PickElement.tsx";
 import {useGetFileLink} from "hooks/useGetFileLink.ts";
 import {TextEditor} from "components/TextEditor/TextEditor.tsx";
 import {InputTable} from "components/InputControl/InputTable.tsx";
+import {ChoiceInputControl} from "components/InputControl/ChoiceInputControl.tsx";
 
 interface Props {
   value?: unknown
-  question: Question
+  context: QuestionContext
   onChange?: (val: unknown) => void
   onSave?: (val: AnswerInput) => void
   onFileSave?: (params: FileParams) => void
@@ -27,8 +27,10 @@ interface Props {
 
 const parseDate = (value: unknown) => value ? dayjs(value as string) : undefined;
 
-const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, onFileSave, answer }: Props) => {
+const InputFieldControl = ({ value, context, onChange, onSave, visibleChoices, onFileSave, answer }: Props) => {
   const { l, t } = useTranslate();
+
+  const question = context.question;
 
   const save = useCallback((value: unknown) => {
     onSave?.({ questionName: question.name, value });
@@ -46,47 +48,10 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
     debouncedSave(value);
   }
 
-  const choices = question.choices?.filter(c => !visibleChoices || visibleChoices.includes(c.name));
-  const options = choices?.map(c => ({ value: c.name, label: l(c.text) })) ?? [];
-
   switch (question.type) {
     case "Choice": {
-      const useRadioList = (question.layout as ChoiceLayoutOptions)?.type === "RadioList";
-      if (useRadioList && question.isArray)
-        return <Checkbox.Group onChange={change}
-                               value={value as unknown[]}>
-          <Space direction="vertical">
-            {choices?.map(o => <Checkbox key={o.name} value={o.name}><TooltipText text={o.text}
-                                                                                  description={o.description}/></Checkbox>)}
-          </Space>
-        </Checkbox.Group>
-      else if (useRadioList)
-        return <Radio.Group onChange={v => change(v.target.value)}
-                            value={value as string}>
-          <Space direction="vertical">
-            {choices?.map(o => <Radio key={o.name} value={o.name}><TooltipText text={o.text}
-                                                                               description={o.description}/></Radio>)}
-          </Space>
-        </Radio.Group>
-
-      if (question.isArray)
-        return <Select value={value as string[]}
-                       onChange={(v: string[]) => change(v)}
-                       mode={"multiple"}
-                       showSearch={options?.length > 10}
-                       filterOption={(input, option) =>
-                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                       }
-                       style={{color: "blue"}}
-                       options={options}/>
-      else
-        return <Select value={value as string}
-                       onChange={(v: string) => change(v)}
-                       filterOption={(input, option) =>
-                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                       }
-                       showSearch={options?.length > 10}
-                       options={options}/>
+      const choices = question.choices?.filter(c => !visibleChoices || visibleChoices.includes(c.name));
+      return <ChoiceInputControl choices={choices} question={question} value={value} onChange={change} />
     }
     case "String":
       if ((question.layout as StringLayoutOptions)?.multiline)
@@ -130,7 +95,7 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
       </Upload>
     case "Object":
       if (question.isArray) {
-        return <InputTable question={question} value={answer?.value as unknown[]}
+        return <InputTable context={context} value={answer?.value as unknown[]}
                            onChange={v => debouncedChange(v)}/>
       } else {
         return "Not implemented";
@@ -156,6 +121,7 @@ const InputFieldControl = ({ value, question, onChange, onSave, visibleChoices, 
     case "Reference":
       return question.workflowDefinition && <InstanceDropdown value={value as string}
                                                               onInput={i => change(i)}
+                                                              context={context}
                                                               workflowDefinition={question.workflowDefinition} />
   }
   return <Input />

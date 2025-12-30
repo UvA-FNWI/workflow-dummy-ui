@@ -1,9 +1,18 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {WorkflowDefinition, Screen, Submission, User, WorkflowInstance, Message, LinkInfo} from "backend/types.ts";
+import type {
+  WorkflowDefinition,
+  Screen,
+  Submission,
+  User,
+  WorkflowInstance,
+  Message,
+  LinkInfo,
+  Choice
+} from "backend/types.ts";
 import type {
   AddMessageParams,
   DeleteFileParams, ExecuteActionParams,
-  FindParams,
+  FindParams, GetChoicesParams,
   GetInstanceParams,
   GetInstancesParams, GetMessagesParams,
   GetScreenParams,
@@ -22,7 +31,7 @@ export const backendConfig = {
 
 export const backendSlice = createApi({
   reducerPath: 'api',
-  tagTypes: ["WorkflowInstance"],
+  tagTypes: ["WorkflowInstance", "AnswerChoices"],
   baseQuery: fetchBaseQuery({
     baseUrl: backendConfig.endpoint,
     headers: {
@@ -102,7 +111,10 @@ export const backendSlice = createApi({
             }
           )
         )
-      }
+      },
+      invalidatesTags: (res, _, params) => res?.answers
+        .filter(a => a.questionName !== params.answer.questionName)
+        .map(a => ({ type: "AnswerChoices", id: a.questionName })) ?? []
     }),
     createInstance: build.mutation<WorkflowInstance, GetInstancesParams>({
       query: (body) => ({
@@ -137,6 +149,10 @@ export const backendSlice = createApi({
         method: "post",
         body: params
       })
+    }),
+    getChoices: build.query<Choice[], GetChoicesParams>({
+      query: (params) => `Answers/${params.instanceId}/${params.submissionId}/${params.questionName}/Choices`,
+      providesTags: (_, __, arg) => [{ type: "AnswerChoices", id: arg.questionName }]
     }),
     getPdfLinks: build.query<LinkInfo, GetMessagesParams>({
       query: (params) => `Pdf/${params.instanceId}`

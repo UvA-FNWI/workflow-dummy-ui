@@ -92,7 +92,7 @@ export const PageControl = ({ instanceId, submissionId, page, last, loading, nex
                   source={l(q.description)!}/></div>}
           <Form.Item noStyle name={q.name}
                      rules={answer?.validationError ? [errorRule(l(answer.validationError)!)] : q.isRequired ? [requiredAnswer] : []}>
-            <InputControl question={q}
+            <InputControl context={{ question: q, instanceId, submissionId }}
                           onSave={val => save(val as AnswerInput)}
                           onFileSave={params => saveFile(instanceId, submissionId, params)}
                           answer={answer} />

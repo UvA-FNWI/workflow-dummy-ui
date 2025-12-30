@@ -6,13 +6,13 @@ import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 import {VerticalSpace} from "components/Layout/VerticalSpace.tsx";
 //import {useState} from "react";
 import {AnswerControl} from "components/AnswerControl/AnswerControl.tsx";
-import type {Question, TableLayoutOptions} from "backend/types.ts";
+import type {QuestionContext, TableLayoutOptions} from "backend/types.ts";
 
 type Row = { [key: string]: unknown };
 
 interface Props {
   value?: unknown[]
-  question: Partial<Question>
+  context: QuestionContext
   onChange?: (val: unknown) => void
 }
 
@@ -22,8 +22,10 @@ const addProp = (row: Row, key: string, value: unknown) => {
   return newRow;
 }
 
-export const InputTable = ({ question, value, onChange }: Props) => {
+export const InputTable = ({ context, value, onChange }: Props) => {
   const { l, t } = useTranslate();
+
+  const question = context.question;
   const inline = (question.layout as TableLayoutOptions)?.type !== "Modal";
   //const [editTarget, setEditTarget] = useState<Row | null>(null);
 
@@ -45,7 +47,7 @@ export const InputTable = ({ question, value, onChange }: Props) => {
         key: c.name,
         header: l(c.text),
         render: (r: { [s: string]: unknown }) => inline ? (
-          <InputControl question={c} value={r[c.name]}
+          <InputControl context={context} value={r[c.name]}
                         onChange={v => onChange?.(value!.map(z => z === r ? addProp(r, c.name, v) : z))}
           />
         ) : <AnswerControl answer={{ id: c.name, questionName: c.name, isVisible: true, files: [], value: r[c.name] }} question={c} />

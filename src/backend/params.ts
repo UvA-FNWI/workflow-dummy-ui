@@ -44,6 +44,12 @@ export type SaveFileParams = {
   file: File
 }
 
+export type GetChoicesParams = {
+  instanceId: string
+  submissionId: string
+  questionName: string
+}
+
 export type DeleteFileParams = {
   instanceId: string
   submissionId: string

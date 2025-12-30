@@ -124,6 +124,12 @@ export type Page = {
   questions: Question[]
 }
 
+export type QuestionContext = {
+  question: Question
+  instanceId: string
+  submissionId: string
+}
+
 export type Question = {
   name: string
   type: DataType
