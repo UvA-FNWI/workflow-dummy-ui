@@ -154,6 +154,9 @@ export const backendSlice = createApi({
       query: (params) => `Answers/${params.instanceId}/${params.submissionId}/${params.questionName}/Choices`,
       providesTags: (_, __, arg) => [{ type: "AnswerChoices", id: arg.questionName }]
     }),
+    getCurrentChoices: build.query<Choice[], GetChoicesParams>({
+      query: (params) => `Answers/${params.instanceId}/${params.submissionId}/${params.questionName}/CurrentChoices`,
+    }),
     getPdfLinks: build.query<LinkInfo, GetMessagesParams>({
       query: (params) => `Pdf/${params.instanceId}`
     }),

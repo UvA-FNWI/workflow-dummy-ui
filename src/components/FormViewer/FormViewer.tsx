@@ -36,7 +36,7 @@ export const FormViewer = ({ instanceId, submission }: Props) => {
                          render: a => <>
                            <div style={{display: "flex", alignItems: "center"}}>
                              <span style={{flexGrow: "1"}}>
-                               <AnswerControl submissionId={submission.id} answer={a.answer} question={a.question} />
+                               <AnswerControl instanceId={instanceId} submissionId={submission.id} answer={a.answer} question={a.question} />
                              </span>
                              <MessagesButton questionName={a.question.name} instanceId={instanceId} />
                            </div>

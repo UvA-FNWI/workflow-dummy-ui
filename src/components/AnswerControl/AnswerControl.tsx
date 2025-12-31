@@ -4,6 +4,7 @@ import {Markdown} from "components/Markdown/Markdown.tsx";
 import type {Answer, DataType, Question, StringLayoutOptions, User} from "backend/types.ts";
 import type {Currency} from "components/CurrencyControl/CurrencyControl.tsx";
 import {useGetFileLink} from "hooks/useGetFileLink.ts";
+import {ReferenceViewer} from "components/AnswerControl/ReferenceViewer.tsx";
 
 interface Props {
   answer: Answer
@@ -11,6 +12,7 @@ interface Props {
   type?: DataType
   isPart?: boolean
   submissionId?: string
+  instanceId?: string
 }
 
 export const AnswerControl = (props: Props) => {
@@ -20,11 +22,11 @@ export const AnswerControl = (props: Props) => {
   return control;
 }
 
-const AnswerControlInternal = ({ answer, question, type, isPart, submissionId }: Props) => {
+const AnswerControlInternal = ({ answer, question, type, isPart, instanceId, submissionId }: Props) => {
   const { l } = useTranslate();
   const getFileLink = useGetFileLink(submissionId);
 
-  if (question?.isArray && !isPart && question.type != "File") {
+  if (question?.isArray && !isPart && question.type != "File" && question.type != "Reference") {
     const entries = answer.value as unknown[];
     return <div>{ entries?.map((e,i) =>
       <div key={i}>
@@ -50,8 +52,11 @@ const AnswerControlInternal = ({ answer, question, type, isPart, submissionId }:
       const currency = answer.value as Currency;
       return `${currency?.currency} ${currency?.amount}`;
     }
-    // case DataType.Table:
-    //   return <TableViewer answer={answer} />
+    case "Reference":
+      if (submissionId && question && instanceId) {
+        return <ReferenceViewer context={{ submissionId, instanceId, question }} />
+      }
+      break;
   }
   if (answer.value && (question?.layout as StringLayoutOptions)?.multiline) {
     return <>
