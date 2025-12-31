@@ -1,5 +1,5 @@
 import {formatDate, formatDateTime} from "utilities/formatters.ts";
-import {useTranslate} from "hooks/useTranslate.ts";
+import {type LocalString, useTranslate} from "hooks/useTranslate.ts";
 import {Markdown} from "components/Markdown/Markdown.tsx";
 import type {Answer, DataType, Question, StringLayoutOptions, User} from "backend/types.ts";
 import type {Currency} from "components/CurrencyControl/CurrencyControl.tsx";
@@ -38,6 +38,8 @@ const AnswerControlInternal = ({ answer, question, type, isPart, submissionId }:
       return <>{ answer.files?.map(f => <div key={f.id}><a href={getFileLink(f, question?.name ?? "Broken!")} target="_blank">{f.name}</a></div>)}</>
     case "Date":
       return formatDate(answer.value);
+    case "LocalString":
+      return l(answer.value as LocalString);
     case "DateTime":
       return formatDateTime(answer.value);
     case "User":

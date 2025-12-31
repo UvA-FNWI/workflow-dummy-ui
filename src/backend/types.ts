@@ -172,6 +172,6 @@ export type LinkInfo = {
 export type PageLayout = "Normal" | "Condensed";
 export type ActionType = "SubmitForm" | "Execute";
 export type RoleAction = "ViewAdminTools" | "View" | "Edit" | "Submit";
-export type DataType = "File" | "Date" | "DateTime" | "User" | "Choice" | "Currency" | "Object" | "String" | "Double" | "Reference" | "Int";
+export type DataType = "File" | "Date" | "DateTime" | "User" | "Choice" | "Currency" | "Object" | "String" | "Double" | "Reference" | "Int" | "LocalString";
 export type ChoiceLayoutType = "Dropdown" | "RadioList";
 export type TableLayoutType = "InlineEditing" | "Modal";

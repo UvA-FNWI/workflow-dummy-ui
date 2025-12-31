@@ -35,7 +35,7 @@ export const ScreenTable = ({ workflowDefinition, screen }: Props) => {
             return value;
           },
           render: (row: ScreenRow) => {
-            const value = row.values[column.id]?.toString();
+            const value = row.values[column.id];
             const answerControl = <AnswerControl answer={{
               value,
               isVisible: true,
