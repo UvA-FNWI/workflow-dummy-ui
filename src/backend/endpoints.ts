@@ -148,7 +148,18 @@ export const backendSlice = createApi({
         url: "Actions",
         method: "post",
         body: params
-      })
+      }),
+      async onQueryStarted(params, {dispatch, queryFulfilled}) {
+        const {data} = await queryFulfilled;
+        if (!data.instance) return;
+        dispatch(
+          backendSlice.util.updateQueryData(
+            "getInstance",
+            {id: params.instanceId},
+            () => data.instance,
+          ),
+        );
+      },
     }),
     getChoices: build.query<Choice[], GetChoicesParams>({
       query: (params) => `Answers/${params.instanceId}/${params.submissionId}/${params.questionName}/Choices`,

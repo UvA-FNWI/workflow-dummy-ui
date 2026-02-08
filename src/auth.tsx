@@ -1,12 +1,12 @@
 import {type OidcClientSettings, User} from "oidc-client-ts";
-import {oidcAuthority, oidcClientId} from "env.ts";
+import {oidcAuthority, oidcClientId, oidcScope} from "env.ts";
 
 export const oidcConfig: OidcClientSettings = {
   authority: oidcAuthority ?? "https://auth-pr.datanose.nl/",
   client_id: oidcClientId ?? "datanose.local",
   redirect_uri: window.location.toString(),
   response_type: "code",
-  scope: "openid profile"
+  scope: oidcScope ?? "openid profile"
 };
 
 export function getAccessToken() {
