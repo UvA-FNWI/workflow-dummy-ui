@@ -19,7 +19,7 @@ import type {
   GetSubmissionParams,
   SaveAnswerParams, SaveFileParams, UndoEventParams
 } from "backend/params.ts";
-import type {SaveAnswerPayload, SubmitSubmissionPayload} from "backend/payloads.ts";
+import type {ExecuteActionPayload, SaveAnswerPayload, SubmitSubmissionPayload} from "backend/payloads.ts";
 import {endpoint} from "env.ts";
 import {getAccessToken} from "auth.tsx";
 
@@ -143,7 +143,7 @@ export const backendSlice = createApi({
         method: "delete"
       }),
     }),
-    executeAction: build.mutation<void, ExecuteActionParams>({
+    executeAction: build.mutation<ExecuteActionPayload, ExecuteActionParams>({
       query: (params) => ({
         url: "Actions",
         method: "post",

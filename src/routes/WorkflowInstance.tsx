@@ -38,9 +38,11 @@ export const WorkflowInstance = () => {
       case "SubmitForm":
         navigate(`form/${act.form}`);
         break;
-      case "Execute":
-        await executeAction({type: act.type, instanceId, name: act.name });
+      case "Execute": {
+        const res = await executeAction({type: act.type, instanceId, name: act.name});
+        if (res.data?.result.redirectUrl) window.location.href = res.data.result.redirectUrl;
         break;
+      }
     }
     setActiveAction(undefined);
   }
