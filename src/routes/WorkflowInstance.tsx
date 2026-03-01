@@ -54,7 +54,7 @@ export const WorkflowInstance = () => {
   const showAdminTools = data?.permissions.includes("ViewAdminTools");
 
   return <>
-    {data && !data.submissions.filter(s => s.dateSubmitted).length && subsToSubmit && subsToSubmit.length > 0 &&
+    {data && !data.submissions.filter(s => s.dateSubmitted).length && subsToSubmit && subsToSubmit.length === 1 &&
         <Navigate to={`form/${subsToSubmit[0].form}`} replace={true} /> }
     {data && <div>
         <Descriptions bordered column={1} style={{ width: "400px", marginBottom: "30px", marginTop: "20px" }}>
